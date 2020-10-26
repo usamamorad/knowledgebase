@@ -12,3 +12,6 @@ For asking a question, you need to provide the question case sensitive as identi
 \"the answer to life, universe and everything is 42\"
 
 Generics were used to give the Knowledgebase more flexibility in the usage of preferred types in future implementations of the knowledgebase. For example, if you need the answers to be a more complex structure than a string, or if the question should be an model object with more informations to it.
+
+ADDITIONAL NOTE:
+When adding a question, if the question was previously contained, the old question is replaced by the specified new answers.
