@@ -1,4 +1,4 @@
-package at.cgm.at.knowledgebase.test;
+package com.cgm.at.knowledgebase.test;
 
 import com.cgm.at.knowledgebase.common.ErrorMessages;
 import com.cgm.at.knowledgebase.common.KnowledgeBase;
