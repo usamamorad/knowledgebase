@@ -166,4 +166,45 @@ public class TextualKnowledgeServiceTest {
                 () -> this.textualKnowledgeService.addKnowledge(question + " \"these are more than one question, I don't know so much!\""));
         assertEquals(String.format(ErrorMessages.QUESTION_EXCEEDS_255_CHARACTERS, question), exception.getMessage());
     }
+
+
+    @Test
+    public void askQuestion_ShouldSucceed_Test() throws KnowledgeBaseException {
+        List<String> answers = this.textualKnowledgeService.askQuestion("Can a mosquito transmit more than one disease?");
+        assertEquals(Arrays.asList(
+                "The mosquito species Aedes aegypti and Aedes albopictus carry dengue, chikungunya and Zika virus.",
+                "In addition\nAedes aegypti also transmits yellow fever."
+        ), answers);
+    }
+
+    @Test
+    public void askQuestion_ShouldSucceed_UnknownQuestionReturnsDefaultAnswer_Test() throws KnowledgeBaseException {
+        List<String> answers = this.textualKnowledgeService.askQuestion("What is the answer to life?");
+        assertEquals(Collections.singletonList("the answer to life, universe and everything is 42"), answers);
+    }
+
+    @Test
+    public void askQuestion_ShouldSucceed_QuestionExactly255Chars_Test() throws KnowledgeBaseException {
+        String question = "What is Prince William's full name and What's the name of the Coco Pops mascot and What year did Vincent Van Gogh die and Switzerland is made up of how many cantons and Which political figure became Baronness of Kesteven and Who designed the Eiffel Tower?";
+        assertEquals(255, question.length());
+        List<String> answers = this.textualKnowledgeService.askQuestion(question);
+        assertEquals(Collections.singletonList("these are more than one question, I don't know so much!"), answers);
+    }
+
+    @Test
+    public void askQuestion_ShouldThrowValidationError_Question256Chars_Test() {
+        String question = "What is Prince William's full name and What's the name of the Coco Pops mascot and What year did Vincent Van Gogh die and Switzerland is made up of how many cantons and Which political figure became Baronness of Kesteven, and Who designed the Eiffel Tower?";
+        assertEquals(256, question.length());
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> this.textualKnowledgeService.askQuestion(question));
+        assertEquals(String.format(ErrorMessages.QUESTION_EXCEEDS_255_CHARACTERS, question), exception.getMessage());
+    }
+
+    @Test
+    public void askQuestion_ShouldThrowValidationError_QuestionMarkIsMissing_Test() {
+        String question = "What is the answer to life";
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> this.textualKnowledgeService.askQuestion(question));
+        assertEquals(String.format(ErrorMessages.QUESTION_NO_QUESTIONMARK, question), exception.getMessage());
+    }
 }
