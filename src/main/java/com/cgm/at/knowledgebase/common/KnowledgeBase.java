@@ -84,7 +84,7 @@ public abstract class KnowledgeBase<Q, A, S> implements IKnowledgeService<Q, A, 
      * @return A {@link IKnowledgeValidationService}
      * @see IKnowledgeValidationService
      */
-    public IKnowledgeValidationService getValidationService(){
+    public IKnowledgeValidationService<Q, A, S> getValidationService(){
         return this.validationService;
     }
 }
